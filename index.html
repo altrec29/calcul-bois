@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#5b3a29">
+<title>Calcul Bois de Bout</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#f1ebe4;
+ color:#261b15;
+ font-family:Arial,sans-serif;
+}
+main{
+ max-width:520px;
+ margin:auto;
+ padding:18px;
+}
+.card{
+ background:white;
+ border-radius:22px;
+ padding:22px;
+ box-shadow:0 4px 20px #0002;
+}
+h1{
+ margin:0;
+ font-size:28px;
+}
+.subtitle{
+ color:#76675d;
+ margin:7px 0 22px;
+}
+label{
+ display:block;
+ font-weight:bold;
+ font-size:17px;
+ margin-top:15px;
+ margin-bottom:6px;
+}
+input{
+ width:100%;
+ padding:14px;
+ font-size:23px;
+ border:2px solid #d8cec5;
+ border-radius:13px;
+ background:#fff;
+}
+button{
+ width:100%;
+ margin-top:22px;
+ padding:17px;
+ border:0;
+ border-radius:14px;
+ background:#5b3a29;
+ color:white;
+ font-size:21px;
+ font-weight:bold;
+}
+.result{
+ margin-top:22px;
+ padding:20px;
+ border-radius:18px;
+ background:#edf7ed;
+ border:2px solid #9bc89b;
+}
+.result-title{
+ font-size:17px;
+ font-weight:bold;
+}
+.big{
+ font-size:34px;
+ font-weight:900;
+ margin:5px 0 16px;
+}
+.line{
+ display:flex;
+ justify-content:space-between;
+ padding:8px 0;
+ border-bottom:1px solid #cddfcd;
+}
+.note{
+ margin-top:16px;
+ font-size:13px;
+ color:#6b625c;
+ line-height:1.45;
+}
+</style>
+</head>
+
+<body>
+
+<main>
+<div class="card">
+
+<h1>🪵 Calcul Bois de Bout</h1>
+<div class="subtitle">
+Calcul de la longueur de bois à préparer
+</div>
+
+<label>1. Longueur finale souhaitée (mm)</label>
+<input id="longueur" type="number" inputmode="decimal" value="500">
+
+<label>2. Épaisseur finale souhaitée (mm)</label>
+<input id="epaisseur" type="number" inputmode="decimal" value="50">
+
+<label>3. Hauteur du bois de départ (mm)</label>
+<input id="hauteur" type="number" inputmode="decimal" value="40">
+
+<label>4. Largeur de coupe / longueur des blocs (mm)</label>
+<input id="bloc" type="number" inputmode="decimal" value="50">
+
+<label>5. Épaisseur de lame (mm)</label>
+<input id="lame" type="number" inputmode="decimal" value="2.8">
+
+<button onclick="calculer()">CALCULER</button>
+
+<div class="result" id="resultat"></div>
+
+<div class="note">
+Le nombre de blocs est arrondi à l'entier supérieur afin d'obtenir au moins la longueur finale souhaitée.
+<br><br>
+La longueur à préparer =
+nombre de blocs × largeur des blocs
++ nombre de blocs × épaisseur de lame.
+</div>
+
+</div>
+</main>
+
+<script>
+
+function valeur(id){
+ return parseFloat(document.getElementById(id).value) || 0;
+}
+
+function calculer(){
+
+ const longueur = valeur("longueur");
+ const epaisseur = valeur("epaisseur");
+ const hauteur = valeur("hauteur");
+ const bloc = valeur("bloc");
+ const lame = valeur("lame");
+
+ if(longueur<=0 || epaisseur<=0 || hauteur<=0 || bloc<=0 || lame<0){
+   document.getElementById("resultat").innerHTML =
+   "<b>Vérifie les valeurs saisies.</b>";
+   return;
+ }
+
+ const blocs = Math.ceil(longueur / hauteur);
+
+ const boisUtile = blocs * bloc;
+
+ const perteLame = blocs * lame;
+
+ const longueurDepart = boisUtile + perteLame;
+
+ document.getElementById("resultat").innerHTML =
+
+ '<div class="result-title">NOMBRE DE BLOCS</div>' +
+
+ '<div class="big">' + blocs + '</div>' +
+
+ '<div class="line">' +
+ '<span>Bois utile</span>' +
+ '<b>' + boisUtile.toFixed(1) + ' mm</b>' +
+ '</div>' +
+
+ '<div class="line">' +
+ '<span>Perte des coupes</span>' +
+ '<b>' + perteLame.toFixed(1) + ' mm</b>' +
+ '</div>' +
+
+ '<div class="line">' +
+ '<span>LONGUEUR À PRÉPARER</span>' +
+ '<b>' + longueurDepart.toFixed(1) + ' mm</b>' +
+ '</div>';
+}
+
+calculer();
+
+</script>
+
+</body>
+</html>
