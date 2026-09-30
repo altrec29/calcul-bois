@@ -102,16 +102,16 @@ Calcul de la longueur de bois à préparer
 </div>
 
 <label>1. Longueur finale souhaitée (mm)</label>
-<input id="longueur" type="number" inputmode="decimal" value="500">
+<input id="longueur" type="number" inputmode="decimal">
 
 <label>2. Épaisseur finale souhaitée / longueur des blocs (mm)</label>
-<input id="epaisseur" type="number" inputmode="decimal" value="50">
+<input id="epaisseur" type="number" inputmode="decimal">
 
 <label>3. Hauteur du bois de départ (mm)</label>
-<input id="hauteur" type="number" inputmode="decimal" value="40">
+<input id="hauteur" type="number" inputmode="decimal">
 
 <label>4. Épaisseur de lame (mm)</label>
-<input id="lame" type="number" inputmode="decimal" value="2.8">
+<input id="lame" type="number" inputmode="decimal">
 
 <button onclick="calculer()">CALCULER</button>
 
@@ -134,12 +134,49 @@ function valeur(id){
  return parseFloat(document.getElementById(id).value) || 0;
 }
 
+function sauvegarder(){
+
+ localStorage.setItem("calculBois_longueur",
+ document.getElementById("longueur").value);
+
+ localStorage.setItem("calculBois_epaisseur",
+ document.getElementById("epaisseur").value);
+
+ localStorage.setItem("calculBois_hauteur",
+ document.getElementById("hauteur").value);
+
+ localStorage.setItem("calculBois_lame",
+ document.getElementById("lame").value);
+}
+
+function charger(){
+
+ const longueur = localStorage.getItem("calculBois_longueur");
+ const epaisseur = localStorage.getItem("calculBois_epaisseur");
+ const hauteur = localStorage.getItem("calculBois_hauteur");
+ const lame = localStorage.getItem("calculBois_lame");
+
+ document.getElementById("longueur").value =
+ longueur !== null ? longueur : "500";
+
+ document.getElementById("epaisseur").value =
+ epaisseur !== null ? epaisseur : "50";
+
+ document.getElementById("hauteur").value =
+ hauteur !== null ? hauteur : "40";
+
+ document.getElementById("lame").value =
+ lame !== null ? lame : "2.8";
+}
+
 function calculer(){
 
  const longueur = valeur("longueur");
  const epaisseur = valeur("epaisseur");
  const hauteur = valeur("hauteur");
  const lame = valeur("lame");
+
+ sauvegarder();
 
  if(longueur<=0 || epaisseur<=0 || hauteur<=0 || lame<0){
    document.getElementById("resultat").innerHTML =
@@ -177,6 +214,7 @@ function calculer(){
  '</div>';
 }
 
+charger();
 calculer();
 
 </script>
