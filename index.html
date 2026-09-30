@@ -96,6 +96,7 @@ button{
 <div class="card">
 
 <h1>🪵 Calcul Bois de Bout</h1>
+
 <div class="subtitle">
 Calcul de la longueur de bois à préparer
 </div>
@@ -103,16 +104,13 @@ Calcul de la longueur de bois à préparer
 <label>1. Longueur finale souhaitée (mm)</label>
 <input id="longueur" type="number" inputmode="decimal" value="500">
 
-<label>2. Épaisseur finale souhaitée (mm)</label>
+<label>2. Épaisseur finale souhaitée / longueur des blocs (mm)</label>
 <input id="epaisseur" type="number" inputmode="decimal" value="50">
 
 <label>3. Hauteur du bois de départ (mm)</label>
 <input id="hauteur" type="number" inputmode="decimal" value="40">
 
-<label>4. Largeur de coupe / longueur des blocs (mm)</label>
-<input id="bloc" type="number" inputmode="decimal" value="50">
-
-<label>5. Épaisseur de lame (mm)</label>
+<label>4. Épaisseur de lame (mm)</label>
 <input id="lame" type="number" inputmode="decimal" value="2.8">
 
 <button onclick="calculer()">CALCULER</button>
@@ -123,7 +121,7 @@ Calcul de la longueur de bois à préparer
 Le nombre de blocs est arrondi à l'entier supérieur afin d'obtenir au moins la longueur finale souhaitée.
 <br><br>
 La longueur à préparer =
-nombre de blocs × largeur des blocs
+nombre de blocs × longueur des blocs
 + nombre de blocs × épaisseur de lame.
 </div>
 
@@ -141,10 +139,9 @@ function calculer(){
  const longueur = valeur("longueur");
  const epaisseur = valeur("epaisseur");
  const hauteur = valeur("hauteur");
- const bloc = valeur("bloc");
  const lame = valeur("lame");
 
- if(longueur<=0 || epaisseur<=0 || hauteur<=0 || bloc<=0 || lame<0){
+ if(longueur<=0 || epaisseur<=0 || hauteur<=0 || lame<0){
    document.getElementById("resultat").innerHTML =
    "<b>Vérifie les valeurs saisies.</b>";
    return;
@@ -152,7 +149,7 @@ function calculer(){
 
  const blocs = Math.ceil(longueur / hauteur);
 
- const boisUtile = blocs * bloc;
+ const boisUtile = blocs * epaisseur;
 
  const perteLame = blocs * lame;
 
